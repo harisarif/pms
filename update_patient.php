@@ -141,13 +141,13 @@ include './config/sidebar.php';?>
                 class="form-control form-control-sm rounded-0" value="<?php echo $row['address'];?>" />
               </div>
               <div class="col-lg-4 col-md-4 col-sm-4 col-xs-10">
-                <label>CNIC</label>
+                <label>Slip Type</label>
                 <input type="text" id="cnic" name="cnic" required="required"
                 class="form-control form-control-sm rounded-0" value="<?php echo $row['cnic'];?>" />
               </div>
               <div class="col-lg-4 col-md-4 col-sm-4 col-xs-10">
                 <div class="form-group">
-                  <label>Date of Birth</label>
+                  <label>Time</label>
                     <div class="input-group date" 
                     id="date_of_birth" 
                     data-target-input="nearest">
@@ -168,7 +168,7 @@ include './config/sidebar.php';?>
                 class="form-control form-control-sm rounded-0" value="<?php echo $row['phone_number'];?>" />
               </div>
               <div class="col-lg-4 col-md-4 col-sm-4 col-xs-10">
-              <label>Gender</label>
+              <label>Slip Price</label>
                 <!-- $gender -->
 
                 <select class="form-control form-control-sm rounded-0" id="gender" 
