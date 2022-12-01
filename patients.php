@@ -10,6 +10,17 @@ $today = date("Y-m-d H:i:s");
 // }
 
 
+function patient_already_added($con, $patient_name, $slip_no)
+{
+  $query = $con->query('select patient_name, slipNumber from patients order by id desc limit 1');
+  $r = $query->fetch();
+  if($r['patient_name'] == $patient_name && $r['slipNumber'] == $slip_no)
+  {
+    return false;
+  }
+  return true;
+}
+
 
 $message = '';
 if (isset($_POST['save_Patient'])) {
@@ -30,28 +41,33 @@ if (isset($_POST['save_Patient'])) {
     $gender = $_POST['gender'];
 if ($patientName != '' && $address != '' &&
   $cnic != '' && $dateBirth != '' && $phoneNumber != '' && $gender != '') {
+
+
+    if(patient_already_added($con, $patientName, $slipNumber))
+    {
       $query = "INSERT INTO `patients`(`patient_name`,
-    `address`, `cnic`, `date_of_birth`, `phone_number`, `gender`,`father_name`,`slipNumber`)
-VALUES('$patientName', '$address', '$cnic', '$dateBirth',
-'$phoneNumber', '$gender','$fName','$slipNumber');";
-try {
-
-  $con->beginTransaction();
-
-  $stmtPatient = $con->prepare($query);
-  $stmtPatient->execute();
-  $last_id = $con->lastInsertId();
-  $con->commit();
-
-  $message = 'patient added successfully.';
-
-} catch(PDOException $ex) {
-  $con->rollback();
-
-  echo $ex->getMessage();
-  echo $ex->getTraceAsString();
-  exit;
-}
+          `address`, `cnic`, `date_of_birth`, `phone_number`, `gender`,`father_name`,`slipNumber`)
+      VALUES('$patientName', '$address', '$cnic', '$dateBirth',
+      '$phoneNumber', '$gender','$fName','$slipNumber');";
+    try {
+    
+      $con->beginTransaction();
+    
+      $stmtPatient = $con->prepare($query);
+      $stmtPatient->execute();
+      $last_id = $con->lastInsertId();
+      $con->commit();
+    
+      $message = 'patient added successfully.';
+    
+    } catch(PDOException $ex) {
+      $con->rollback();
+    
+      echo $ex->getMessage();
+      echo $ex->getTraceAsString();
+      exit;
+    }
+    }
 }
   header("Location:congratulation.php?goto_page=patients.php&message=$message&print=$last_id");
   exit;
@@ -178,7 +194,7 @@ include './config/sidebar.php';?>
               </div>
               <div class="col-lg-4 col-md-4 col-sm-4 col-xs-10">
                 <label>Phone Number</label>
-                <input type="text" id="phone_number" name="phone_number" required="required"
+                <input type="text" id="phone_number" onkeyup="addHyphen(this)" name="phone_number" required="required"
                 class="form-control form-control-sm rounded-0"/>
               </div>
               <div class="col-lg-4 col-md-4 col-sm-4 col-xs-10">
@@ -264,6 +280,8 @@ include './config/sidebar.php';?>
                       <a href="update_patient.php?id=<?php echo $row['id'];?>" class = "btn btn-primary btn-sm btn-flat">
                       <i class="fa fa-edit"></i>
                       </a>
+                     
+                      </a>
                     </td>
 
                   </tr>
@@ -325,7 +343,19 @@ include './config/sidebar.php';?>
 
   });
 
+  function addHyphen (element) {
+    	let ele = document.getElementById(element.id);
+      var text = ele.value;
+      if(text.search("-") == '-1')
+      {
+        ele = ele.value.split('-').join('');    // Remove dash (-) if mistakenly entered.
 
+        let finalVal = ele.match(/.{1,4}/g).join('-');
+        document.getElementById(element.id).value = finalVal;
+      }
+    }
 </script>
+
+
 </body>
 </html>

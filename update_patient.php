@@ -8,6 +8,7 @@ if (isset($_POST['save_Patient'])) {
     $hiddenId = $_POST['hidden_id'];
 
     $patientName = trim($_POST['patient_name']);
+    $fatherName = trim($_POST['father_name']);
     $address = trim($_POST['address']);
     $cnic = trim($_POST['cnic']);
     
@@ -23,14 +24,15 @@ if (isset($_POST['save_Patient'])) {
 
     $gender = $_POST['gender'];
 if ($patientName != '' && $address != '' && 
-  $cnic != '' && $dateBirth != '' && $phoneNumber != '' && $gender != '') {
+  $cnic != '' && $dateBirth != '' && $phoneNumber != '' && $gender != ''  && $fatherName != '') {
       $query = "update `patients` 
     set `patient_name` = '$patientName', 
     `address` = '$address', 
     `cnic` = '$cnic', 
     `date_of_birth` = '$dateBirth', 
     `phone_number` = '$phoneNumber', 
-    `gender` = '$gender' 
+    `gender` = '$gender' ,
+    `father_name` = '$fatherName'
 where `id` = $hiddenId;";
 try {
 
@@ -60,7 +62,7 @@ try {
 try {
 $id = $_GET['id'];
 $query = "SELECT `id`, `patient_name`, `address`, 
-`cnic`, date_format(`date_of_birth`, '%m/%d/%Y') as `date_of_birth`,  `phone_number`, `gender` 
+`cnic`, date_format(`date_of_birth`, '%m/%d/%Y') as `date_of_birth`,  `phone_number`, `gender` ,`father_name`
 FROM `patients` where `id` = $id;";
 
   $stmtPatient1 = $con->prepare($query);
@@ -132,6 +134,12 @@ include './config/sidebar.php';?>
               <input type="text" id="patient_name" name="patient_name" required="required"
                 class="form-control form-control-sm rounded-0" value="<?php echo $row['patient_name'];?>" />
               </div>
+              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-10">
+              <label>Father Name</label>
+              <input type="text" id="patient_name" name="father_name" required="required"
+                class="form-control form-control-sm rounded-0" value="<?php echo $row['father_name'];?>" />
+              </div>
+              
               <br>
               <br>
               <br>
@@ -164,7 +172,7 @@ include './config/sidebar.php';?>
               </div>
               <div class="col-lg-4 col-md-4 col-sm-4 col-xs-10">
                 <label>Phone Number</label>
-                <input type="text" id="phone_number" name="phone_number" required="required"
+                <input type="text" id="phone_number" name="phone_number" required="required" onkeyup="addHyphen(this)"
                 class="form-control form-control-sm rounded-0" value="<?php echo $row['phone_number'];?>" />
               </div>
               <div class="col-lg-4 col-md-4 col-sm-4 col-xs-10">
@@ -184,7 +192,7 @@ include './config/sidebar.php';?>
                 <div class="col-lg-11 col-md-10 col-sm-10">&nbsp;</div>
               <div class="col-lg-1 col-md-2 col-sm-2 col-xs-2">
                 <button type="submit" id="save_Patient" 
-                name="save_Patient" class="btn btn-primary btn-sm btn-flat btn-block">Save</button>
+                name="save_Patient" class="btn btn-primary btn-sm btn-flat btn-block">Update</button>
               </div>
             </div>
           </form>
@@ -242,6 +250,17 @@ include './config/sidebar.php';?>
     
   });
 
+  function addHyphen (element) {
+    	let ele = document.getElementById(element.id);
+      var text = ele.value;
+      if(text.search("-") == '-1')
+      {
+        ele = ele.value.split('-').join('');    // Remove dash (-) if mistakenly entered.
+
+        let finalVal = ele.match(/.{1,4}/g).join('-');
+        document.getElementById(element.id).value = finalVal;
+      }
+    }
 </script>
 </body>
 </html>
