@@ -1,4 +1,4 @@
-<footer class="main-footer fixed-bottom">
+<footer class="main-footer fixed-bottom " style="display:none;">
     <strong>Copyright &copy; <?php echo date('Y');?> 
     <a href="./">Hope Clinic</a>.</strong> All rights reserved.
     <div class="float-right d-sm-block">

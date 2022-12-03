@@ -59,12 +59,14 @@ $queryMonth = "SELECT count(*) as month FROM `patients` where date(date_of_birth
     color: #fff!important;
 }
 </style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed">
 <!-- Site wrapper -->
 <div class="wrapper">
   <!-- Navbar -->
 
+  <?php include './config/data_tables_css.php';?>
 <?php
 
 include './config/header.php';
@@ -78,6 +80,53 @@ include './config/sidebar.php';
         <div class="row mb-2">
           <div class="col-sm-6">
             <h1>Dashboard</h1>
+            <!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="width:570px;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <div class="card-body">
+            <div class="row table-responsive">
+              <table id="all_patients"
+              class="table table-striped dataTable table-bordered dtr-inline"
+               role="grid" aria-describedby="all_patients_info">
+
+                <thead>
+                  <tr>
+                    <th>Slip Number</th>
+                    <th>Patient Name</th>
+                    <th>Father Name</th>
+                    <th>Slip Price</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  
+                  <tr>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                   
+
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
           </div>
         </div>
       </div><!-- /.container-fluid -->
@@ -91,14 +140,19 @@ include './config/sidebar.php';
 
           <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box bg-info">
+            <div class="small-box bg-info" style="display: flex; justify-content:space-between">
               <div class="inner">
                 <h3><?php echo $todaysCount;?></h3>
 
                 <p>Today's Slips</p>
               </div>
-              <div class="icon">
-                <i class="fa fa-calendar-day"></i>
+              <div class="inner">
+                <h3><?php echo  (500 * $currentWeekCount) + (1000 * $currentMonthCount) + (1500 * $currentYearCount);?></h3>
+
+                <p>Total Amount</p>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                  Show Details
+                </button>
               </div>
 
             </div>
@@ -106,14 +160,16 @@ include './config/sidebar.php';
           <!-- ./col -->
           <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box bg-purple">
+            <div class="small-box bg-purple" style="display: flex; justify-content:space-between">
               <div class="inner">
                 <h3><?php echo $currentWeekCount;?></h3>
 
                 <p>500 Slips</p>
               </div>
-              <div class="icon">
-                <i class="fa fa-calendar-week"></i>
+              <div class="inner">
+                <h3><?php echo 500 * $currentWeekCount;?></h3>
+
+                <p>Amount</p>
               </div>
 
             </div>
@@ -121,14 +177,16 @@ include './config/sidebar.php';
           <!-- ./col -->
           <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box bg-fuchsia text-reset">
+            <div class="small-box bg-fuchsia text-reset" style="display: flex; justify-content:space-between">
               <div class="inner">
-                <h3><?php echo $currentMonthCount;?></h3>
+                <h3 class="text-white"><?php echo $currentMonthCount;?></h3>
 
-                <p>1000 Slips</p>
+                <p class="text-white">1000 Slips</p>
               </div>
-              <div class="icon">
-                <i class="fa fa-calendar"></i>
+              <div class="inner">
+                <h3 class="text-white"><?php echo 1000 * $currentMonthCount;?></h3>
+
+                <p class="text-white">Amount</p>
               </div>
 
             </div>
@@ -136,14 +194,16 @@ include './config/sidebar.php';
           <!-- ./col -->
           <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box bg-maroon text-reset">
+            <div class="small-box bg-maroon text-reset" style="display: flex; justify-content:space-between">
               <div class="inner">
-                <h3><?php echo $currentYearCount;?></h3>
+                <h3 class="text-white"><?php echo $currentYearCount;?></h3>
 
-                <p>1500 Slips</p>
+                <p class="text-white">1500 Slips</p>
               </div>
-              <div class="icon">
-                <i class="fa fa-user-injured"></i>
+              <div class="inner">
+                <h3 class="text-white"><?php echo 1500 * $currentYearCount;?></h3>
+
+                <p class="text-white">Amount</p>
               </div>
 
             </div>
@@ -154,18 +214,30 @@ include './config/sidebar.php';
 
     <!-- /.content -->
   </div>
+  
   <!-- /.content-wrapper -->
-
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 <?php include './config/footer.php';?>
+
+
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
 
 <?php include './config/site_js_links.php';?>
+<?php include './config/data_tables_js.php'; ?>
 <script>
   $(function(){
     showMenuSelected("#mnu_dashboard", "");
   })
+  $(function () {
+    $("#all_patients").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false,
+    }).buttons().container().appendTo('#all_patients_wrapper .col-md-6:eq(0)');
+
+  });
 </script>
 
 </body>

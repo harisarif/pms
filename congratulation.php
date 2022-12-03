@@ -4,8 +4,23 @@
   	$gotoPage = $_GET['goto_page'];
 
     $message = $_GET['message'];
-	// $print_id = $_GET['print'];
+	$print_id = $_GET['print'];
 
-  	 header("Location:$gotoPage?message=$message");
+	if($_GET['already_exists'])
+	{
+		header("Location:$gotoPage?message=$message");
+		exit;
+	}
+	if(isset($_GET['deleted']))
+	{
+		header("Location:$gotoPage?message=$message");
+		exit;
+	}
+	else 
+	{
+		header("Location:$gotoPage?message=$message&print=$print_id");
+		exit;
+	}
+
 
 ?>

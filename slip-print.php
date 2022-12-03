@@ -6,11 +6,49 @@ $query = "select * from patients where id =".$print_id;
 $stmt = $con->prepare($query);
 $stmt->execute();
 $row = $stmt->fetch();
+
 ?>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
 
-<div style="margin-top:300px;">
-<h1 align="center">Slip Print Here</h1>
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
 
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+
+<div style="margin-top:100px;">
+<h1 align="center">HOPE CLINIC</h1>
+<table>
+  <tr>
+    <th>Slip Number</th>
+    <th>Patient Name</th>
+    <th>Father Name</th>
+    <th>Slip Price</th>
+    <th>Slip Type</th>
+  </tr>
+  <tr>
+    <td><?php echo $row['slipNumber']?></td>
+    <td><?php echo $row['patient_name']?></td>
+    <td><?php echo $row['father_name']?></td>
+    <td><?php echo $row['gender']?></td>
+    <td><?php echo $row['cnic']?></td>
+  </tr>
+  
+</table>
 </div>
 
+<script>
 
+window.print();
+window.onafterprint = window.close;
+</script>

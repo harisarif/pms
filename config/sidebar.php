@@ -49,13 +49,13 @@ if(!(isset($_SESSION['user_id']))) {
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item">
+              <!-- <li class="nav-item">
                 <a href="new_prescription.php" class="nav-link" 
                 id="mi_new_prescription">
                   <i class="far fa-circle nav-icon"></i>
                   <p>New Prescription</p>
                 </a>
-              </li>
+              </li> -->
               <li class="nav-item">
                 <a href="patients.php" class="nav-link" 
                 id="mi_patients">
@@ -63,20 +63,20 @@ if(!(isset($_SESSION['user_id']))) {
                   <p>Add Patients</p>
                 </a>
               </li>
-              <li class="nav-item">
+              <!-- <li class="nav-item">
                 <a href="patient_history.php" class="nav-link" 
                 id="mi_patient_history">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Patient History</p>
                 </a>
-              </li>
+              </li> -->
               
             </ul>
           </li>
 
 
 
-          <li class="nav-item" id="mnu_medicines">
+          <!-- <li class="nav-item" id="mnu_medicines">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-pills"></i>
               <p>
@@ -130,8 +130,27 @@ if(!(isset($_SESSION['user_id']))) {
                 Users
               </p>
             </a>
+          </li> -->
+          <li class="nav-item">
+            <a href="patient-history.php" class="nav-link" id="patient-hisotry">
+              <i class="nav-icon fa fa-sign-out-alt"></i>
+              <p>
+                Slips History
+              </p>
+            </a>
           </li>
+          
+          <?php if ($_SESSION['user_id'] == 2){?>
 
+          <li class="nav-item">
+            <a href="deleted-slips.php" class="nav-link" id="deleted-slips">
+              <i class="nav-icon fa fa-trash"></i>
+              <p>
+               Deleted Slips
+              </p>
+            </a>
+          </li>
+          <?php } ?>
           <li class="nav-item">
             <a href="logout.php" class="nav-link">
               <i class="nav-icon fa fa-sign-out-alt"></i>

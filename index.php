@@ -77,7 +77,7 @@ try {
 <div class="login-box">
   <div class="login-logo mb-4">
     <img src="dist/img/logo.jpg" class="img-thumbnail p-0 border rounded-circle" id="system-logo">
-    <div class="text-center h2 mb-0">ope Clinic</div>
+    <div class="text-center h2 mb-0">Hope Clinic</div>
   </div>
   <!-- /.login-logo -->
   <div class="card card-outline card-primary rounded-0 shadow">
