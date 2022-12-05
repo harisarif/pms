@@ -85,7 +85,7 @@ try {
 $query = "SELECT `id`, `patient_name`, `address`,
 `cnic`, date_format(`date_of_birth`, '%d %b %Y') as `date_of_birth`, date_of_birth as app_time,
 `phone_number`, `gender`,`father_name`,`slipNumber`
-FROM `patients` where date(date_of_birth) = curdate() order by `patient_name` asc;";
+FROM `patients` where date(date_of_birth) = curdate() order by `date_of_birth` asc;";
 
   $stmtPatient1 = $con->prepare($query);
   $stmtPatient1->execute();

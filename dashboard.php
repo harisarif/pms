@@ -84,20 +84,26 @@ include './config/sidebar.php';
 
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content" style="width:570px;">
-      <div class="modal-header">
+<div class="modal fade DivIdToPrint" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content modal-lg">
+      <div class="modal-header" style="display: flex; justify-content:space-between">
+        <div>
         <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        </div>
+        <div>
+        <a class="btn btn-primary text-white" id="print" onclick="printData()"></a>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
-        </button>
+        </button>  
       </div>
-      <div class="modal-body">
-      <div class="card-body">
+        
+      </div>
+      <div class="modal-body" style="max-height: 90vh; overflow-y: auto;">
+      <div class="card-body" >
             <div class="row table-responsive">
               <table id="all_patients"
-              class="table table-striped dataTable table-bordered dtr-inline"
+              class="table table-striped dataTable table-bordered dtr-inline" border="1" cellpadding="3"
                role="grid" aria-describedby="all_patients_info">
 
                 <thead>
@@ -106,19 +112,12 @@ include './config/sidebar.php';
                     <th>Patient Name</th>
                     <th>Father Name</th>
                     <th>Slip Price</th>
+                    <th>Address</th>
                   </tr>
                 </thead>
 
-                <tbody>
-                  
-                  <tr>
-                    <td>1</td>
-                    <td>1</td>
-                    <td>1</td>
-                    <td>1</td>
-                   
-
-                  </tr>
+                <tbody id="slip-detail">
+        
                 </tbody>
               </table>
             </div>
@@ -144,13 +143,13 @@ include './config/sidebar.php';
               <div class="inner">
                 <h3><?php echo $todaysCount;?></h3>
 
-                <p>Today's Slips</p>
+                <p style="font-size: 0.9rem;">Today's Slips</p>
               </div>
               <div class="inner">
                 <h3><?php echo  (500 * $currentWeekCount) + (1000 * $currentMonthCount) + (1500 * $currentYearCount);?></h3>
 
                 <p>Total Amount</p>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                <button type="button" class="btn btn-primary" onclick="slipDetail(0)">
                   Show Details
                 </button>
               </div>
@@ -170,6 +169,9 @@ include './config/sidebar.php';
                 <h3><?php echo 500 * $currentWeekCount;?></h3>
 
                 <p>Amount</p>
+                <button type="button" class="btn btn-primary" onclick="slipDetail(500)">
+                  Show Details
+                </button>
               </div>
 
             </div>
@@ -187,6 +189,9 @@ include './config/sidebar.php';
                 <h3 class="text-white"><?php echo 1000 * $currentMonthCount;?></h3>
 
                 <p class="text-white">Amount</p>
+                <button type="button" class="btn btn-primary" onclick="slipDetail(1000)">
+                  Show Details
+                </button>
               </div>
 
             </div>
@@ -204,6 +209,9 @@ include './config/sidebar.php';
                 <h3 class="text-white"><?php echo 1500 * $currentYearCount;?></h3>
 
                 <p class="text-white">Amount</p>
+                <button type="button" class="btn btn-primary" onclick="slipDetail(1500)">
+                  Show Details
+                </button>
               </div>
 
             </div>
@@ -232,13 +240,70 @@ include './config/sidebar.php';
   $(function(){
     showMenuSelected("#mnu_dashboard", "");
   })
-  $(function () {
-    $("#all_patients").DataTable({
-      "responsive": true, "lengthChange": false, "autoWidth": false,
-    }).buttons().container().appendTo('#all_patients_wrapper .col-md-6:eq(0)');
+  // $(function () {
+  //   $("#all_patients").DataTable({
+  //     "responsive": true, "lengthChange": false, "autoWidth": false,
+  //     "buttons": ["excel", "pdf", "print",]
+  //   }).buttons().container().appendTo('#all_patients_wrapper .col-md-6:eq(0)');
 
-  });
+  // });
+  function slipDetail(type)
+  {
+    if(type == 0)
+    {
+      $("#exampleModalLabel").text('Total Slips');
+      $("#print").text('Print');
+      
+      
+      $('#print').css("display","")
+    }
+    if(type == 500)
+    {
+      $("#exampleModalLabel").text('500 Slips');
+      $("#print").text('');
+      $('#print').css("display","none")
+    }
+    if(type == 1000)
+    {
+      $("#exampleModalLabel").text('1000 Slips');
+      $("#print").text('');
+      $('#print').css("display","none")
+    }
+    if(type == 1500)
+    {
+      $("#exampleModalLabel").text('1500 Slips');
+      $("#print").text('');
+      
+      $('#print').css("display","none")
+    }
+
+    $.ajax({
+      url: 'slip-detail.php',
+      method: 'post',
+      data: {type:type},
+      success: function(response)
+      {
+        $("#slip-detail").html(response);
+        $("#exampleModal").modal('show');
+      }
+    })
+  }
+  function printData()
+{
+   var divToPrint=document.getElementById("all_patients");
+   newWin= window.open("");
+   newWin.document.write(divToPrint.outerHTML);
+   newWin.print();
+   newWin.close();
+}
+
+// $('button').on('click',function(){
+// printData();
+// })
 </script>
+
+
+
 
 </body>
 </html>

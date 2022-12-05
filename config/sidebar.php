@@ -29,6 +29,7 @@ if(!(isset($_SESSION['user_id']))) {
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
+               
           <li class="nav-item" id="mnu_dashboard">
             <a href="dashboard.php" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -37,8 +38,7 @@ if(!(isset($_SESSION['user_id']))) {
               </p>
             </a>
           </li>
-
-          
+          <?php if ($_SESSION['user_id'] != 3){?>
           <li class="nav-item" id="mnu_patients">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-user-injured"></i>
@@ -72,6 +72,8 @@ if(!(isset($_SESSION['user_id']))) {
               </li> -->
               
             </ul>
+            
+          
           </li>
 
 
@@ -139,7 +141,7 @@ if(!(isset($_SESSION['user_id']))) {
               </p>
             </a>
           </li>
-          
+          <?php }?>
           <?php if ($_SESSION['user_id'] == 2){?>
 
           <li class="nav-item">

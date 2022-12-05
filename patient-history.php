@@ -80,7 +80,7 @@ try {
 $query = "SELECT `id`, `patient_name`, `address`,
 `cnic`, date_format(`date_of_birth`, '%d %b %Y') as `date_of_birth`, date_of_birth as app_time,
 `phone_number`, `gender`,`father_name`,`slipNumber`
-FROM `patients`  order by `patient_name` asc;";
+FROM `patients`  order by `app_time` desc;";
 
   $stmtPatient1 = $con->prepare($query);
   $stmtPatient1->execute();
@@ -157,7 +157,7 @@ include './config/sidebar.php';?>
             <div class="row table-responsive">
               <table id="all_patients"
               class="table table-striped dataTable table-bordered dtr-inline"
-               role="grid" aria-describedby="all_patients_info">
+               role="grid" aria-describedby="all_patients_info" data-order="[]">
 
                 <thead>
                   <tr>
