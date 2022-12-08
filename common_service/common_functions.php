@@ -15,7 +15,7 @@ function getGender222() {
 function getGender($gender = '') {
 	$data = '<option value="">Select Slip Price</option>';
 	
-	$arr = array("500", "1000", "1500");
+	$arr = array("250ZF","500ZF","500", "1000", "1500");
 
 	$i = 0;
 	$size = sizeof($arr);

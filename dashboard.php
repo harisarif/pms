@@ -8,7 +8,9 @@ include './config/connection.php';
 
   $queryToday = "SELECT count(*) as today FROM `patients` where date(date_of_birth) = curdate()";
 
-  $queryWeek = "SELECT count(*) as week FROM `patients` where date(date_of_birth) = curdate() AND gender = 500";
+  $queryWeek = "SELECT count(*) as week FROM `patients` where date(date_of_birth) = curdate() AND gender = 500 AND is_zf=0";
+  $query250ZF = "SELECT count(*) as zf250 FROM `patients` where date(date_of_birth) = curdate() AND gender = 250";
+  $query500ZF = "SELECT count(*) as zf500 FROM `patients` where date(date_of_birth) = curdate() AND gender = 500 AND is_zf=1";
 
 $queryYear = "SELECT count(*) as year FROM `patients` where date(date_of_birth) = curdate() AND gender = 1500";
 
@@ -18,7 +20,9 @@ $queryMonth = "SELECT count(*) as month FROM `patients` where date(date_of_birth
   $currentWeekCount = 0;
   $currentMonthCount = 0;
   $currentYearCount = 0;
-
+  $current250ZFCount = 0;
+  
+  $current500ZFCount = 0;
 
   try {
 
@@ -26,6 +30,22 @@ $queryMonth = "SELECT count(*) as month FROM `patients` where date(date_of_birth
     $stmtToday->execute();
     $r = $stmtToday->fetch(PDO::FETCH_ASSOC);
     $todaysCount = $r['today'];
+
+
+
+
+    $stmt250ZFToday = $con->prepare($query250ZF);
+    $stmt250ZFToday->execute();
+    $r = $stmt250ZFToday->fetch(PDO::FETCH_ASSOC);
+    $current250ZFCount = $r['zf250'];
+
+
+    $stmt500ZFToday = $con->prepare($query500ZF);
+    $stmt500ZFToday->execute();
+    $r = $stmt500ZFToday->fetch(PDO::FETCH_ASSOC);
+    $current500ZFCount = $r['zf500'];
+
+
 
     $stmtWeek = $con->prepare($queryWeek);
     $stmtWeek->execute();
@@ -61,7 +81,7 @@ $queryMonth = "SELECT count(*) as month FROM `patients` where date(date_of_birth
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
-<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed">
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed" onload="load()">
 <!-- Site wrapper -->
 <div class="wrapper">
   <!-- Navbar -->
@@ -163,7 +183,7 @@ include './config/sidebar.php';
               <div class="inner">
                 <h3><?php echo $currentWeekCount;?></h3>
 
-                <p>500 Slips</p>
+                <p style="font-size: 0.9rem;">500 Slips</p>
               </div>
               <div class="inner">
                 <h3><?php echo 500 * $currentWeekCount;?></h3>
@@ -183,7 +203,7 @@ include './config/sidebar.php';
               <div class="inner">
                 <h3 class="text-white"><?php echo $currentMonthCount;?></h3>
 
-                <p class="text-white">1000 Slips</p>
+                <p class="text-white" style="font-size: 0.9rem;">1000 Slips</p>
               </div>
               <div class="inner">
                 <h3 class="text-white"><?php echo 1000 * $currentMonthCount;?></h3>
@@ -203,13 +223,54 @@ include './config/sidebar.php';
               <div class="inner">
                 <h3 class="text-white"><?php echo $currentYearCount;?></h3>
 
-                <p class="text-white">1500 Slips</p>
+                <p class="text-white" style="font-size: 0.9rem;">1500 Slips</p>
               </div>
               <div class="inner">
                 <h3 class="text-white"><?php echo 1500 * $currentYearCount;?></h3>
 
                 <p class="text-white">Amount</p>
                 <button type="button" class="btn btn-primary" onclick="slipDetail(1500)">
+                  Show Details
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="row">
+        
+        <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-info" style="display: flex; justify-content:space-between">
+              <div class="inner">
+                <h3><?php echo $current250ZFCount;?></h3>
+
+                <p style="font-size: 0.9rem;">250 Slips</p>
+              </div>
+              <div class="inner">
+                <h3><?php echo  (250 * $current250ZFCount) ;?></h3>
+
+                <p>Amount</p>
+                <button type="button" class="btn btn-primary" onclick="slipDetail(250)">
+                  Show Details
+                </button>
+              </div>
+
+            </div>
+          </div>
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-info" style="display: flex; justify-content:space-between">
+              <div class="inner">
+                <h3><?php echo $current500ZFCount;?></h3>
+
+                <p style="font-size: 0.9rem;">500ZF Slips</p>
+              </div>
+              <div class="inner">
+                <h3><?php echo  (500 * $current500ZFCount) ;?></h3>
+
+                <p>Amount</p>
+                <button type="button" class="btn btn-primary" onclick="slipDetail('500ZF')">
                   Show Details
                 </button>
               </div>
@@ -224,7 +285,7 @@ include './config/sidebar.php';
   </div>
   
   <!-- /.content-wrapper -->
-  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 <?php include './config/footer.php';?>
@@ -276,6 +337,14 @@ include './config/sidebar.php';
       
       $('#print').css("display","none")
     }
+    
+    if(type == 250)
+    {
+      $("#exampleModalLabel").text('250 Slips');
+      $("#print").text('');
+      
+      $('#print').css("display","none")
+    }
 
     $.ajax({
       url: 'slip-detail.php',
@@ -296,7 +365,10 @@ include './config/sidebar.php';
    newWin.print();
    newWin.close();
 }
-
+function load()
+{
+setTimeout("window.open(self.location, '_self');", 10000);
+}
 // $('button').on('click',function(){
 // printData();
 // })

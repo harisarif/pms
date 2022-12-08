@@ -5,9 +5,13 @@ date_default_timezone_set("Asia/Karachi");
 $today = date("Y-m-d H:i:s");
 if(isset($_GET['print']))
 {
-  $print_id = $_GET['print'];
-	echo '<script>var my_screen = window.open("slip-print.php?id='.$print_id.'","PRINT","xyz");</script>';
+  if(!empty($_GET['print'])) {
+    $print_id = $_GET['print'];
+    echo '<script>var my_screen = window.open("slip-print.php?id='.$print_id.'","PRINT","xyz");</script>';
+  }
+  
 }
+
 
 
 function patient_already_added($con, $patient_name, $slip_no,$message)
@@ -39,16 +43,26 @@ if (isset($_POST['save_Patient'])) {
     $address = ucwords(strtolower($address));
 
     $gender = $_POST['gender'];
+    $zf=0;
 if ($patientName != '' && $address != '' &&
   $cnic != '' && $dateBirth != '' && $phoneNumber != '' && $gender != '') {
 
+    if($gender=='250ZF') {
+      $zf=1;
+      $gender=250;
+    }
+    if($gender=='500ZF') {
+      $zf=1;
+      $gender=500;
+    }
 
     if(patient_already_added($con, $patientName, $slipNumber,$message))
     {
       $query = "INSERT INTO `patients`(`patient_name`,
-          `address`, `cnic`, `date_of_birth`, `phone_number`, `gender`,`father_name`,`slipNumber`)
+          `address`, `cnic`, `date_of_birth`, `phone_number`, `gender`,`father_name`,`slipNumber`,`is_zf`)
       VALUES('$patientName', '$address', '$cnic', '$dateBirth',
-      '$phoneNumber', '$gender','$fName','$slipNumber');";
+      '$phoneNumber', '$gender','$fName','$slipNumber','$zf');";
+
     try {
     
       $con->beginTransaction();
@@ -84,7 +98,7 @@ try {
 
 $query = "SELECT `id`, `patient_name`, `address`,
 `cnic`, date_format(`date_of_birth`, '%d %b %Y') as `date_of_birth`, date_of_birth as app_time,
-`phone_number`, `gender`,`father_name`,`slipNumber`
+`phone_number`, `gender`,`father_name`,`slipNumber`,`is_zf`
 FROM `patients` where date(date_of_birth) = curdate() order by `date_of_birth` asc;";
 
   $stmtPatient1 = $con->prepare($query);
@@ -280,7 +294,11 @@ include './config/sidebar.php';?>
                     <td><?php echo $row['cnic'];?></td>
                     <td><?php echo $row['date_of_birth']; echo ' '; echo date('h:i:A', strtotime($row['app_time']))?></td>
                     <td><?php echo $row['phone_number'];?></td>
-                    <td><?php echo $row['gender'];?></td>
+                   
+                    <td><?php echo $row['gender'];?> <?php if ($row['is_zf']==1) {
+                          echo 'ZF';
+                  }
+                      ?></td>
                     <td>
                       <a href="update_patient.php?id=<?php echo $row['id'];?>" class = "btn btn-primary btn-sm btn-flat">
                       <i class="fa fa-edit"></i>
@@ -307,12 +325,13 @@ include './config/sidebar.php';?>
 
 
     </section>
+    <?php include './config/footer.php';?>
   </div>
     <!-- /.content -->
 
   <!-- /.content-wrapper -->
 <?php
- include './config/footer.php';
+ 
 
   $message = '';
   if(isset($_GET['message'])) {

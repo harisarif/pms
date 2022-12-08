@@ -12,6 +12,7 @@ label {
 
 body>.wrapper>.content-wrapper {
     padding-bottom: 3.5em !important;
+    min-height: 1200px !important;
 }
 
 section.content-header {

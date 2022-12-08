@@ -28,6 +28,7 @@ tr:nth-child(even) {
 
 <div style="margin-top:100px;">
 <h1 align="center">HOPE CLINIC</h1>
+<p align="center"><?php echo date('d/m/Y h:i:A',strtotime($row['date_of_birth'])) ?></p>
 <table>
   <tr>
     <th>Slip Number</th>
@@ -40,7 +41,10 @@ tr:nth-child(even) {
     <td><?php echo $row['slipNumber']?></td>
     <td><?php echo $row['patient_name']?></td>
     <td><?php echo $row['father_name']?></td>
-    <td><?php echo $row['gender']?></td>
+    <td><?php echo $row['gender']?><?php if ($row['is_zf']==1) {
+                          echo 'ZF';
+                  }
+                      ?></td>
     <td><?php echo $row['cnic']?></td>
   </tr>
   

@@ -23,8 +23,17 @@ if (isset($_POST['save_Patient'])) {
     $address = ucwords(strtolower($address));
 
     $gender = $_POST['gender'];
-if ($patientName != '' && $address != '' && 
+    $zf=0;
+    if ($patientName != '' && $address != '' && 
   $cnic != '' && $dateBirth != '' && $phoneNumber != '' && $gender != ''  && $fatherName != '') {
+    if( $gender =='250ZF') {
+      $zf=1;
+      $gender=250;
+    }
+    if( $gender =='500ZF') {
+      $zf=1;
+      $gender=500;
+    }
       $query = "update `patients` 
     set `patient_name` = '$patientName', 
     `address` = '$address', 
@@ -32,7 +41,8 @@ if ($patientName != '' && $address != '' &&
     `date_of_birth` = '$dateBirth', 
     `phone_number` = '$phoneNumber', 
     `gender` = '$gender' ,
-    `father_name` = '$fatherName'
+    `father_name` = '$fatherName',
+    `is_zf`       ='$zf'
 where `id` = $hiddenId;";
 try {
 
@@ -53,7 +63,9 @@ try {
   exit;
 }
 }
-  header("Location:congratulation.php?goto_page=patients.php&message=$message");
+  // header("Location:congratulation.php?goto_page=patients.php&message=$message");
+  
+  header("Location:congratulation.php?goto_page=patients.php&message=$message&print=$hiddenId");
   exit;
 }
 

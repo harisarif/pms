@@ -1,8 +1,9 @@
-<footer class="main-footer fixed-bottom " style="display:none;">
+<footer class="main-footer fixed-bottom " >
     <strong>Copyright &copy; <?php echo date('Y');?> 
     <a href="./">Hope Clinic</a>.</strong> All rights reserved.
-    <div class="float-right d-sm-block">
+    <div class="float-right d-sm-block" style="color:black">
       <!-- PHP - CPMS Version 2.0 -->
+      Developed By : TechTrack
     </div>
   </footer>
 
