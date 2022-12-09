@@ -345,7 +345,14 @@ include './config/sidebar.php';
       
       $('#print').css("display","none")
     }
-
+    if(type == '500ZF')
+    {
+      $("#exampleModalLabel").text('500ZF Slips');
+      $("#print").text('');
+      
+      $('#print').css("display","none")
+    }
+    
     $.ajax({
       url: 'slip-detail.php',
       method: 'post',
